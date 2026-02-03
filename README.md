@@ -24,7 +24,7 @@ Note that only float versions are prepared to run on a CPU
 
 #### To synthesize the hardware with Vitis HLS
 For each HAR-CNN model architecture configuration, there are two versions named internalWeights and externalWeights. The former has the trained model weights hardcoded, while the latter reads the weights from a testbench source.
-1. Navigate to the VitisHLS folder and choose internalWeights or internalWeights
+1. Navigate to the VitisHLS folder and choose internalWeights or externalWeights
 
 2. Run the script: vitis_hls -f run_hls.tcl
 
