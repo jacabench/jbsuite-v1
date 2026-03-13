@@ -4,6 +4,12 @@ Thank you for considering contributing to **jbsuite**.
 
 This document outlines the process for contributing to the repository.
 
+## 🛠 Types of Contributions We Expect
+
+
+## 📁 Required Directory Structure
+
+
 ## 🚀 Contribution Process
 
 ### 1. Open an Issue First
@@ -18,11 +24,11 @@ The benchmark must be self-contained. All the libraries, testbenchs, dataset, an
 At least an X86 and an HLS versions must be ready to use. Synthesize the HLS design using your target toolchain and ensure it successfully passes simulation.
 
 ### 4. Report Your Baselines (`metadata.json`)
-You must clearly state your baseline results so maintainers can verify them. Include this data in your `metadata.json` file:
+Show the baseline results. Include this data in a `metadata.json` file:
 * **Target Hardware:** Exact FPGA part number or MCU (e.g., Xilinx Artix-7 xc7a100t)
 * **Toolchain:** Exact EDA tool and version (e.g., Vivado 2023.2)
-* **Resource Utilization:** LUTs, FFs, DSP slices, and Block RAM.
-* **Performance:** Maximum Frequency ($F_{max}$), Latency (in clock cycles), and Throughput.
+* **Resource Utilization:** LUTs, FFs, DSP slices, and Block RAM, and etc.
+* **Performance:** Clock Frequency ($F_{max}$), Latency (in clock cycles), and Throughput, and etc.
 
 ### 5. Submit the Pull Request (PR)
 Open a PR against the `main` branch of the upstream repository. When you open the PR, our automated checklist template will appear in the text box—please fill it out completely. 
