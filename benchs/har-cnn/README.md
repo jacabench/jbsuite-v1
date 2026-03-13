@@ -1,6 +1,3 @@
-# jbsuite-v1
-Version 1 of the JACA Benchmark Suite
-
 ### HAR-CNN: download this repo and unzip de file dataset.zip in its current location to create a folder named dataset with train and test data.
 
 #### To train the model on your CPU (x86)
