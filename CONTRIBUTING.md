@@ -1,6 +1,6 @@
 # Contributing to jacabench suite benchmark
 
-Thank you for considering contributing to **[jbsuite]**! 
+Thank you for considering contributing to **jbsuite**! 
 
 This document outlines the process for contributing to the repository.
 
