@@ -1,49 +1,33 @@
-# jbsuite-v1
-Version 1 of the JACA Benchmark Suite
+# Contributing to jacabench suite benchmark
 
-### HAR-CNN: download this repo and unzip de file dataset.zip in its current location to create a folder named dataset with train and test data.
+Thank you for considering contributing to **[jbsuite]**! 
 
-#### To train the model on your CPU (x86)
-1. Open a new terminal
+This document outlines the process for contributing to the repository.
 
-2. Navigate to the x86/backprop folder
+## 🚀 Contribution Process
 
-3. Compile the trainer: make
+### 1. Open an Issue First
+The first step is to open an Issue proposing your new benchmark. Use that space to describe your proposal, providing information why you think the benchmark is relevant for the community.   
 
-4. Run the trainer in the x86/bin folder. This creates the .bin weight files and the normalization .txt file needed for both x86 and HLS inference
+### 2. Fork and Branch
+Fork the repository to your own GitHub account and create a new branch for your feature:
+`git checkout -b feature/add-your-benchmark`
 
-#### To run inference on your CPU (x86)
-Note that only float versions are prepared to run on a CPU
-1. Open a new terminal
+### 3. Evaluating your code
+The benchmark must be self-contained. All the libraries, testbenchs, dataset, and etc, must be provided. 
+At least an X86 and an HLS versions must be ready to use. Synthesize the HLS design using your target toolchain and ensure it successfully passes simulation.
 
-2. Navigate to the x86/scr folder
+### 4. Report Your Baselines (`metadata.json`)
+You must clearly state your baseline results so maintainers can verify them. Include this data in your `metadata.json` file:
+* **Target Hardware:** Exact FPGA part number or MCU (e.g., Xilinx Artix-7 xc7a100t)
+* **Toolchain:** Exact EDA tool and version (e.g., Vivado 2023.2)
+* **Resource Utilization:** LUTs, FFs, DSP slices, and Block RAM.
+* **Performance:** Maximum Frequency ($F_{max}$), Latency (in clock cycles), and Throughput.
 
-3. Compile the model: make
+### 5. Submit the Pull Request (PR)
+Open a PR against the `main` branch of the upstream repository. When you open the PR, our automated checklist template will appear in the text box—please fill it out completely. 
 
-4. Run inference from the x86/bin folder
+Make sure to provide a clear summary of your benchmark, instructions on how to run your scripts, and link back to your original Issue using GitHub's closing keywords (e.g., type `Resolves #12` or `Closes #12` in your PR description).
 
-#### To synthesize the hardware with Vitis HLS
-For each HAR-CNN model architecture configuration, there are two versions named internalWeights and externalWeights. The former has the trained model weights hardcoded, while the latter reads the weights from a testbench source.
-1. Navigate to the VitisHLS folder and choose internalWeights/src or externalWeights/src
-
-2. Run the script: vitis_hls -f run_hls.tcl
-
-3. It may take a very long time to conclude, since it does simulation, generates RTL and then does co-simulation. You can avoid going through some steps by commenting the respective lines in the run_hls.tcl script (by default, only simulation is enabled).
-
-#### HLS Simulation on device 'xczu7ev-ffvc1156-2-e' running inference on 316462 test samples:
-Model version: fix_CNN_1Conv_2FC_1D 
-Correctly Classified: 233861 / 316462
-Accuracy: 73.90%
-CSim: Elapsed time: 00:37:31
-
-Model version: fix_CNN_3Conv_2FC_1D 
-Correctly Classified: 227935 / 316462
-Accuracy: 72.03%
-CSim: Elapsed time: 01:10:35
-
-Model version: fix_CNN_5Conv_1FC_1D 
-Correctly Classified: 232476 / 316462
-Accuracy: 73.46%
-CSim: Elapsed time: 03:33:37
-
-
+### 6. Review Process
+A maintainer will pull your branch, run your scripts on the reference toolchain to verify your claims, and review your code. Be prepared to answer questions or make minor formatting adjustments during the review!
