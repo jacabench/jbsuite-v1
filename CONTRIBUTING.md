@@ -12,6 +12,14 @@ We expect benchmarks that are ....
 
 When submitting a new benchmark, please organize your files following our standard hierarchy to keep the repository clean and standardized.
 
+
+## ⚖️ Licensing
+
+By contributing to **jbsuite**, you agree that your contributions will be licensed under our License terms seen in the main folder. 
+
+You also affirm that you are the original author of the code you are submitting, or that you have the explicit rights to submit it under this open-source license. Please ensure that no proprietary, encrypted, or vendor-locked Intellectual Property (IP) is included in your Pull Request.
+
+
 ## 🚀 Contribution Process
 
 ### 1. Open an Issue First
