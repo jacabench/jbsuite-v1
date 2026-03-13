@@ -6,9 +6,11 @@ This document outlines the process for contributing to the repository.
 
 ## 🛠 Types of Contributions We Expect
 
+We expect benchmarks that are ....
 
 ## 📁 Required Directory Structure
 
+When submitting a new benchmark, please organize your files following our standard hierarchy to keep the repository clean and standardized.
 
 ## 🚀 Contribution Process
 
