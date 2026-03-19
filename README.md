@@ -16,4 +16,7 @@ jbsuite-v1/\
 To run the makefiles, you need to set the JBSPATH environment variable to point to the location of the JACABenchSuite directory.\ 
 For example:\
 Linux: export JBSPATH=.../JACABenchSuite\
-Windows: set  JBSPATH=...\JACABenchSuite\
+Windows: set  JBSPATH=...\JACABenchSuite
+
+## Contact
+Email: jacabenchsuite@gmail.com
