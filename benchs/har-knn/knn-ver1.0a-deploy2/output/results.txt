@@ -1,0 +1,9 @@
+Accuracy: 68.48%
+Exec. time: 0.1195 ms
+Throughput: 8364.87 inferences/s
+Accuracy: 68.48%
+Accuracy: 68.48%
+Exec. time: 0.1195 ms
+Exec. time: 0.1784 ms
+Throughput: 8364.87 inferences/s
+Throughput: 5605.93 inferences/s

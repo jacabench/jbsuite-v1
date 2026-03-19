@@ -1,0 +1,42 @@
+Accuracy: 74.99%
+Execution time: 0.4461 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 0.4461 s
+Execution time: 0.4872 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 0.4461 s
+Execution time: 0.4872 s
+Execution time: 0.4626 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 0.4461 s
+Execution time: 0.4872 s
+Execution time: 0.4626 s
+Execution time: 0.478 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 0.4461 s
+Execution time: 0.4872 s
+Execution time: 0.4626 s
+Execution time: 0.478 s
+Execution time: 0.5029 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 0.4461 s
+Execution time: 0.4872 s
+Execution time: 0.4626 s
+Execution time: 0.478 s
+Execution time: 0.5029 s
+Execution time: 0.4876 s

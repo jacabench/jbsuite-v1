@@ -1,0 +1,110 @@
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Execution time: 5.6871 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Execution time: 5.6871 s
+Execution time: 5.6243 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Execution time: 5.6871 s
+Execution time: 5.6243 s
+Execution time: 5.696 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Execution time: 5.6871 s
+Execution time: 5.6243 s
+Execution time: 5.696 s
+Execution time: 3.4376 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Execution time: 5.6871 s
+Execution time: 5.6243 s
+Execution time: 5.696 s
+Execution time: 3.4376 s
+Execution time: 3.1545 s
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Accuracy: 74.99%
+Execution time: 5.4851 s
+Execution time: 5.7563 s
+Execution time: 5.7695 s
+Execution time: 6.0305 s
+Execution time: 5.6871 s
+Execution time: 5.6243 s
+Execution time: 5.696 s
+Execution time: 3.4376 s
+Execution time: 3.1545 s
+Execution time: 3.1474 s
