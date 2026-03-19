@@ -18,5 +18,9 @@ For example:\
 Linux: export JBSPATH=.../JACABenchSuite\
 Windows: set  JBSPATH=...\JACABenchSuite
 
+## Datasets
+Folders with the files with data from WIDSDM and PAMA2 datasets are available at: https://drive.google.com/drive/folders/1jp1rNl9nW6CpP6d0VK8ks2yT_KHXdkLT?usp=drive_link \
+Those folders must be copied to the har-knn folder.
+
 ## Contact
 Email: jacabenchsuite@gmail.com
