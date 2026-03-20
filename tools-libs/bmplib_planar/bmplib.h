@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-// Macro para calcular o índice de um pixel num buffer PLANAR
-// k = canal (0:R, 1:G, 2:B), i = linha, j = coluna, w = largura, h = altura
+// Macro: Calculate index for Planar Buffers
+// k = channel (0:R, 1:G, 2:B), i = row, j = col, w = width, h = height
 #define IDX_PLANAR(k, i, j, w, h) ((k) * (h) * (w) + (i) * (w) + (j))
 
 #pragma pack(push, 1)
@@ -29,24 +29,38 @@ typedef struct {
 #pragma pack(pop)
 
 /**
- * @brief Lê um ficheiro de imagem BMP (8 ou 24 bits) e retorna os dados em formato planar.
+ * @brief Reads a BMP file (8 or 24 bit) and returns planar data.
  *
- * @param path O caminho para o ficheiro .bmp.
- * @param bmpHeader Um ponteiro para uma estrutura que será preenchida com o cabeçalho.
- * @return Um ponteiro para um buffer (unsigned char*) com os dados da imagem em
- * formato planar (RRR...GGG...BBB...). Retorna NULL em caso de erro.
- * O chamador é responsável por libertar esta memória com free().
+ * @param path File path.
+ * @param bmpHeader Pointer to header struct to be filled.
+ * @return Pointer to buffer (RRR...GGG...BBB...). Returns NULL on error.
+ * Caller must free() memory.
  */
 unsigned char* getBMPImage(const char* path, BMPHeader* bmpHeader);
 
+
 /**
- * @brief Salva um buffer de imagem em formato planar como um ficheiro BMP de 24 bits.
+ * @brief Lê um BMP e escreve diretamente num buffer pré-alocado.
  *
- * @param path O caminho do ficheiro .bmp a ser criado.
- * @param planar_data Um ponteiro para o buffer com os dados da imagem em formato planar.
- * @param header Um ponteiro para a estrutura BMPHeader contendo as dimensões da imagem.
- * @return 0 em caso de sucesso, -1 em caso de falha.
+ * @param path Caminho do arquivo.
+ * @param dest_buffer Ponteiro para o buffer estático onde os dados serão gravados.
+ * @param max_size Tamanho total do buffer (para evitar overflow).
+ * @param bmpHeader Header para preencher as dimensões.
+ * @return 0 em sucesso, -1 em erro.
+ */
+int loadBMPStatic(const char* path, unsigned char* dest_buffer, int max_size, BMPHeader* bmpHeader);
+
+/**
+ * @brief Saves a planar buffer as a 24-bit BMP file.
+ *
+ * @param path Output file path.
+ * @param planar_data Input buffer (Planar format).
+ * @param header Header containing dimensions.
+ * @return 0 on success, -1 on failure.
  */
 int setBMPImage(const char* path, const unsigned char* planar_data, BMPHeader* header);
 
-#endif // BMPLIB_H
+int hasBMPExtension(const char *filename);
+
+
+#endif
