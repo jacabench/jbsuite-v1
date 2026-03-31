@@ -20,45 +20,41 @@
 #include "types.h"
 #include "features.h"
 
-#ifndef DIMEM
-#define DIMEM 0 // 0: not using dynamic memory allocation
-#endif
-
 #if DIMEM != 0
 #include <stdlib.h>
 #endif
 
-CLASS_ID_TYPE features_normalize_classify(Instance *new_instances, Point *new_point);
+CLASS_ID_TYPE features_normalize_classify(Instance *new_instances);
 
 #if SPECIALIZED == 1 && K == 3
 void copy_3_nearest(BestPoint *dist_points, BestPoint *best_points);
 
-void select_3_nearest(BestPoint *dist_points, int num_points);
+void select_3_nearest(BestPoint *dist_points);
 
-void get_3_NN(Point *new_point, Point *known_points, int num_points, BestPoint *best_points, int num_features);
+void get_3_NN(Point *new_point, Point *known_points, BestPoint *best_points);
 
 CLASS_ID_TYPE plurality_voting_3(BestPoint *best_points);
 
-CLASS_ID_TYPE knn_classifyinstance_3(Point *new_point, Point *known_points, int num_points, int num_features);
+CLASS_ID_TYPE knn_classifyinstance_3(Point *new_point, Point *known_points);
 
 #else
 #if TOP_K != 3 
-void copy_k_nearest(BestPoint *dist_points, BestPoint *best_points, K_TYPE k);
+void copy_k_nearest(BestPoint *dist_points, BestPoint *best_points);
 #endif
 
 #if TOP_K == 1 // select k elements
-void select_k_nearest1(BestPoint *dist_points, int num_points, K_TYPE k);
+void select_k_nearest1(BestPoint *dist_points);
 #elif TOP_K == 2 // bubble sort for k elements
-void select_k_nearest2(BestPoint *dist_points, int num_points, K_TYPE k);
+void select_k_nearest2(BestPoint *dist_points);
 #elif TOP_K == 3 // insertion sort for k elements
-void select_k_nearest3(BestPoint *dist_points, BestPoint *best_points, int num_points, K_TYPE k);
+void select_k_nearest3(BestPoint *dist_points, BestPoint *best_points);
 #endif
 
-void get_k_NN(Point *new_point, Point *known_points, int num_points, BestPoint *best_points, K_TYPE k,  int num_features);
+void get_k_NN(Point *new_point, Point *known_points, BestPoint *best_points);
 
-CLASS_ID_TYPE plurality_voting(K_TYPE k, BestPoint *best_points, int num_classes);
+CLASS_ID_TYPE plurality_voting(BestPoint *best_points);
 
-CLASS_ID_TYPE knn_classifyinstance(Point *new_point, K_TYPE k, int num_classes, Point *known_points, int num_points, int num_features);
+CLASS_ID_TYPE knn_classifyinstance(Point *new_point, Point *known_points);
 #endif	
 
 #endif

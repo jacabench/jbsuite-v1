@@ -75,11 +75,11 @@ void fill_buffers(Instance *instances, int num_sensor_data, DATA_TYPE buffers[WS
 
 void minmax(DATA_TYPE *min, DATA_TYPE *max, int num_points, Point *known_points, 
 			int num_features);
-			
+								
+void minmax_normalize_point(DATA_TYPE *min, DATA_TYPE *max, Point *point, int num_features);
+
 void minmax_normalize(DATA_TYPE *min, DATA_TYPE *max, int num_points, Point *points, 
 					int num_features);
-					
-void minmax_normalize_point(DATA_TYPE *min, DATA_TYPE *max, Point *point, int num_features);
 
 void do_class(CLASS_ID_TYPE *classid, Instance *instances, int wsize, int num_classes);
 

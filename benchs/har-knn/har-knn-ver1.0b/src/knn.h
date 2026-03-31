@@ -26,9 +26,9 @@
 #include <stdlib.h>
 #endif
 
-void copy_k_nearest(BestPoint *dist_points, BestPoint *best_points, K_TYPE k);
+void initialize_best(BestPoint *best_points, K_TYPE k);
 
-void select_k_nearest(BestPoint *dist_points, int num_points, K_TYPE k);
+void update_best(DATA_TYPE distance, CLASS_ID_TYPE classID, BestPoint *best_points, K_TYPE k);
 
 void get_k_NN(Point *new_point, Point *known_points, int num_points, BestPoint *best_points,
 		K_TYPE k,  int num_features);

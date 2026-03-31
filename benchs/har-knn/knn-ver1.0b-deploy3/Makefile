@@ -43,6 +43,7 @@ USE_SQRT ?= 0
 MATH_TYPE ?= 1
 DIST_METHOD ?= 1
 UPDATE ?= 1
+TIMING ?= 1
 
 # -------- Compiler optimizations --------
 OPT ?= -O3

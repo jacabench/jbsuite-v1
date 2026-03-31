@@ -15,16 +15,16 @@
 #include "knn.h"
 
 /** 
-*	Function to create buffer, extract features, normalize and classify.
- */
-CLASS_ID_TYPE features_normalize_classify(Instance *new_instances, Point *new_point) {
+*	Function to create and fill the buffer, extract features, normalize and classify.
+*	Possible modifications may avoid the communication of the "new_point" as it can be local. 
+*/
+CLASS_ID_TYPE features_normalize_classify(Instance *new_instances) {
 
-	const K_TYPE k = K;
 	const int num_features = NUM_FEATURES;
 	const int num_sensor_data = NUM_DATA_SAMPLE;
 	const int window_size = WSIZE;
-    const int num_classes = NUM_CLASSES;
-    const int num_known_points = NUM_KNOWN_POINTS;
+
+	Point new_point;
 
 	// for buffering the input data in windows of samples input to feature extration 
 	// other versions may consider the use of one arrays or FIFO foreach sensor source 
@@ -46,18 +46,16 @@ CLASS_ID_TYPE features_normalize_classify(Instance *new_instances, Point *new_po
 
 	fill_buffers(new_instances, num_sensor_data, buffers, window_size);	
 	
-	do_features(new_point, buffers, window_size);	
+	do_features(&new_point, buffers, window_size);	
 		
 	// normalize the point to classify
-	minmax_normalize_point(min, max, new_point, num_features);
+	minmax_normalize_point(min, max, &new_point, num_features);
 
 	// classify
 	#if SPECIALIZED == 1 && K == 3
-    CLASS_ID_TYPE instance_class = knn_classifyinstance_3(new_point,
-                                   known_points, num_known_points, num_features);
+    	CLASS_ID_TYPE instance_class = knn_classifyinstance_3(&new_point, known_points);
 	#else
-       	CLASS_ID_TYPE instance_class = knn_classifyinstance(new_point, k, num_classes,
-                                   known_points, num_known_points, num_features);
+       	CLASS_ID_TYPE instance_class = knn_classifyinstance(&new_point, known_points);
 	#endif
 
 	return instance_class;
@@ -70,7 +68,7 @@ CLASS_ID_TYPE features_normalize_classify(Instance *new_instances, Point *new_po
 *  Get the 3 nearest points.
 *  This version stores the 3 nearest points in the first 3 positions of dist_point
 */
-void select_3_nearest(BestPoint *dist_points, int num_points) {
+void select_3_nearest(BestPoint *dist_points) {
 
     DATA_TYPE md1, md2, md3, mdaux;
     int di1, di2, di3, diaux;
@@ -95,7 +93,7 @@ void select_3_nearest(BestPoint *dist_points, int num_points) {
 		SWAP(di1, di2, diaux);
 	}
 		
-	for(int i = 3; i < num_points; i++) {
+	for(int i = 3; i < NUM_KNOWN_POINTS; i++) {
 		mdaux = dist_points[i].distance;
 		diaux = i;
 		
@@ -154,14 +152,13 @@ void copy_3_nearest(BestPoint *dist_points, BestPoint *best_points) {
     best_points[2].distance = dist_points[2].distance;
 }
 
-void get_3_NN(Point *new_point, Point *known_points, int num_points,
-	BestPoint *best_points, int num_features) {
+void get_3_NN(Point *new_point, Point *known_points, BestPoint *best_points) {
 		      
 	//printf("num points %d, num featurs %d\n", num_points, num_features);
 	#if DIMEM == 0
-	BestPoint dist_points[num_points];
+	BestPoint dist_points[NUM_KNOWN_POINTS];
     #else
-	BestPoint *dist_points = (BestPoint *) malloc(num_points*sizeof(BestPoint));
+	BestPoint *dist_points = (BestPoint *) malloc(NUM_KNOWN_POINTS*sizeof(BestPoint));
 	#endif 
 	 
     // calculate the Euclidean distance between the Point to classify and each Point in the
@@ -170,13 +167,13 @@ void get_3_NN(Point *new_point, Point *known_points, int num_points,
         DATA_TYPE distance = (DATA_TYPE) 0.0;
 
 		#if DIST_METHOD == 1 // calculate the Euclidean distance
-        for (int j = 0; j < num_features; j++) {
+        for (int j = 0; j < NUM_FEATURES; j++) {
             DATA_TYPE diff = (DATA_TYPE) new_point->features[j] - (DATA_TYPE) known_points[i].features[j];
             distance += diff * diff;
         }
 	
 		#elif DIST_METHOD == 2 // calculate the Manhattan distance
-		for (int j = 0; j < num_features; j++) {
+		for (int j = 0; j < NUM_FEATURES; j++) {
 			#if MATH_TYPE == 1 && DT == 2 // float
             DATA_TYPE absdiff = fabsf((DATA_TYPE) new_point->features[j] - (DATA_TYPE) known_points[i].features[j]);
             #else // double
@@ -191,7 +188,7 @@ void get_3_NN(Point *new_point, Point *known_points, int num_points,
     }
 
 	// select the k nearest Points: 3 first elements of dist_points
-    select_3_nearest(dist_points, num_points);
+    select_3_nearest(dist_points);
 	
 	// copy the 3 first elements of dist_points to the best_points data structure
     copy_3_nearest(dist_points, best_points);
@@ -205,14 +202,14 @@ void get_3_NN(Point *new_point, Point *known_points, int num_points,
 * Classify a given Point (instance) with a code version specialized for k=3.
 * It returns the classified class ID.
 */
-CLASS_ID_TYPE knn_classifyinstance_3(Point *new_point, Point *known_points, int num_points, int num_features) {
+CLASS_ID_TYPE knn_classifyinstance_3(Point *new_point, Point *known_points) {
 
 	//BestPoint *best_points = (BestPoint *) calloc(k, sizeof(BestPoint)) ;
     BestPoint best_points[3]; // Array with the k nearest points to the Point to classify
 
     // calculate the distances of the new point to each of the known points and get
     // the k nearest points
-    get_3_NN(new_point, known_points, num_points, best_points, num_features);
+    get_3_NN(new_point, known_points, best_points);
 
 	// use plurality voting of 3 classes to return the class inferred for the new point
 	CLASS_ID_TYPE classID = plurality_voting_3(best_points);
@@ -225,9 +222,9 @@ CLASS_ID_TYPE knn_classifyinstance_3(Point *new_point, Point *known_points, int 
 *  Copy the top k nearest points (first k elements of dist_points)
 *  to a data structure (best_points) with k points
 */
-void copy_k_nearest(BestPoint *dist_points, BestPoint *best_points, K_TYPE k) {
+void copy_k_nearest(BestPoint *dist_points, BestPoint *best_points) {
 
-    for(int i = 0; i < k; i++) {   // we only need the top k minimum distances
+    for(int i = 0; i < K; i++) {   // we only need the top k minimum distances
        best_points[i].classification_id = dist_points[i].classification_id;
        best_points[i].distance = dist_points[i].distance;
     }
@@ -239,16 +236,16 @@ void copy_k_nearest(BestPoint *dist_points, BestPoint *best_points, K_TYPE k) {
 *  This version stores the k nearest points in the first k positions of dist_point
 */
 #if TOP_K == 1
-void select_k_nearest1(BestPoint *dist_points, int num_points, K_TYPE k) {
+void select_k_nearest1(BestPoint *dist_points) {
 
     DATA_TYPE min_distance, distance_i;
     CLASS_ID_TYPE class_id_1;
     int index;
 
-    for(int i = 0; i < k; i++) {  // we only need the top k minimum distances
+    for(int i = 0; i < K; i++) {  // we only need the top k minimum distances
 		min_distance = dist_points[i].distance;
 		index = i;
-		for(int j = i+1; j < num_points; j++) {
+		for(int j = i+1; j < NUM_KNOWN_POINTS; j++) {
             if(dist_points[j].distance < min_distance) {
                 min_distance = dist_points[j].distance;
                 index = j;
@@ -267,15 +264,15 @@ void select_k_nearest1(BestPoint *dist_points, int num_points, K_TYPE k) {
     }
 }
 #elif TOP_K == 2 // bubble sort for K elements
-void select_k_nearest2(BestPoint *dist_points, int num_points, K_TYPE k) {
+void select_k_nearest2(BestPoint *dist_points) {
 
     DATA_TYPE distance_j;
     CLASS_ID_TYPE class_id_j;
 
 	// Perform only k passes
-	for(int i = 0; i < k; i++) {
+	for(int i = 0; i < K; i++) {
 		int swapped = 0;
-        for(int j = num_points-i-1; j >=0; j--) {
+		for(int j = NUM_KNOWN_POINTS-1; j >= i+1; j--) {
             if(dist_points[j].distance < dist_points[j-1].distance) {
                 distance_j = dist_points[j].distance;
                 dist_points[j].distance = dist_points[j-1].distance;
@@ -292,19 +289,19 @@ void select_k_nearest2(BestPoint *dist_points, int num_points, K_TYPE k) {
     }
 }
 #elif TOP_K == 3 // insertion sort for k elements
-void select_k_nearest3(BestPoint *dist_points, BestPoint *best_points, int num_points, K_TYPE k) {
+void select_k_nearest3(BestPoint *dist_points, BestPoint *best_points) {
 
     DATA_TYPE distance_i;
     CLASS_ID_TYPE class_id_1;
 
-    for(int j = 0; j < num_points; j++) {
+    for(int j = 0; j < NUM_KNOWN_POINTS; j++) {
 		distance_i = dist_points[j].distance;
 		class_id_1 = dist_points[j].classification_id;
 		// find the position
-   		for (int i = 0; i < k; i++) {
+   		for (int i = 0; i < K; i++) {
         	if (distance_i < best_points[i].distance) {
             	// shift one position to the right
-            	for(int t = k-1; t > i; t--) {
+            	for(int t = K-1; t > i; t--) {
                 	best_points[t] = best_points[t-1];
             	}
             	// insert the value
@@ -322,18 +319,17 @@ void select_k_nearest3(BestPoint *dist_points, BestPoint *best_points, int num_p
 * Main kNN function.
 * It calculates the distances and calculates the nearest k points.
 */
-void get_k_NN(Point *new_point, Point *known_points, int num_points,
-	BestPoint *best_points, K_TYPE k,  int num_features) {
+void get_k_NN(Point *new_point, Point *known_points, BestPoint *best_points) {
 		      
 	//printf("num points %d, num featurs %d\n", num_points, num_features);
 	#if DIMEM == 0
-	BestPoint dist_points[num_points];
+	BestPoint dist_points[NUM_KNOWN_POINTS];
     #else
-	BestPoint *dist_points = (BestPoint *) malloc(num_points*sizeof(BestPoint));
+	BestPoint *dist_points = (BestPoint *) malloc(NUM_KNOWN_POINTS*sizeof(BestPoint));
 	#endif 
 
 	#if TOP_K == 3 //insertion sort of k
-	for(int i = 0; i < k; i++) {   // we only need the top k minimum distances
+	for(int i = 0; i < K; i++) {   // we only need the top k minimum distances
        //best_points[i].classification_id = -1;
        best_points[i].distance = MAX_FP_VAL;
     }
@@ -341,11 +337,11 @@ void get_k_NN(Point *new_point, Point *known_points, int num_points,
 	 
     // calculate the Euclidean distance between the Point to classify and each Point in the
     // training dataset (knowledge base)
-    for (int i = 0; i < num_points; i++) {
+    for (int i = 0; i < NUM_KNOWN_POINTS; i++) {
         DATA_TYPE distance = (DATA_TYPE) 0.0;
 
 		#if DIST_METHOD == 1 // calculate the Euclidean distance
-        for (int j = 0; j < num_features; j++) {
+        for (int j = 0; j < NUM_FEATURES; j++) {
             DATA_TYPE diff = (DATA_TYPE) new_point->features[j] - (DATA_TYPE) known_points[i].features[j];
             distance += diff * diff;
         }
@@ -358,7 +354,7 @@ void get_k_NN(Point *new_point, Point *known_points, int num_points,
 		#endif
 	
 		#elif DIST_METHOD == 2 // calculate the Manhattan distance
-		for (int j = 0; j < num_features; j++) {
+		for (int j = 0; j < NUM_FEATURES; j++) {
 			#if MATH_TYPE == 1 && DT == 2 // float
             DATA_TYPE absdiff = fabsf((DATA_TYPE) new_point->features[j] - (DATA_TYPE) known_points[i].features[j]);
             #else // double
@@ -374,16 +370,16 @@ void get_k_NN(Point *new_point, Point *known_points, int num_points,
 
 	// select the k nearest Points: k first elements of dist_points
 	#if TOP_K == 1 // Select k
-    select_k_nearest1(dist_points, num_points, k);
+    select_k_nearest1(dist_points);
 	#elif TOP_K == 2 //bubble sort of k
-    select_k_nearest2(dist_points, num_points, k);
+    select_k_nearest2(dist_points);
 	#elif TOP_K == 3 //insertion sort of k
-    select_k_nearest3(dist_points, best_points, num_points, k);
+    select_k_nearest3(dist_points, best_points);
 	#endif
 	
 	// copy the k first elements of dist_points to the best_points data structure
 	#if TOP_K != 3 
-    copy_k_nearest(dist_points, best_points, k);
+    copy_k_nearest(dist_points, best_points);
 	#endif 
 
 	#if DIMEM != 0
@@ -397,12 +393,12 @@ void get_k_NN(Point *new_point, Point *known_points, int num_points,
 *
 *	Note: it assumes that classes are identified from 0 to num_classes - 1.
 */
-CLASS_ID_TYPE plurality_voting(K_TYPE k, BestPoint *best_points, int num_classes) {
+CLASS_ID_TYPE plurality_voting(BestPoint *best_points) {
 
 	#if DIMEM == 0
-	K_TYPE histogram[num_classes];  // maximum equals the value of k;
+	K_TYPE histogram[NUM_CLASSES];  // maximum equals the value of k;
 	//initialize the histogram
-    for (int i = 0; i < num_classes; i++) {
+    for (int i = 0; i < NUM_CLASSES; i++) {
         histogram[i] = 0;
     }
     #else
@@ -410,14 +406,14 @@ CLASS_ID_TYPE plurality_voting(K_TYPE k, BestPoint *best_points, int num_classes
 	#endif
 
     // build the histogram
-    for (int i = 0; i < k; i++) {
+    for (int i = 0; i < K; i++) {
         BestPoint p = best_points[i];
         histogram[(int) p.classification_id] += 1;
     }
 	
 	CLASS_ID_TYPE classification_id = best_points[0].classification_id;
     K_TYPE max = 1; // maximum is k
-    for (int i = 0; i < num_classes; i++) {
+    for (int i = 0; i < NUM_CLASSES; i++) {
 
         if (histogram[i] > max) {
             max = histogram[i];
@@ -436,20 +432,20 @@ CLASS_ID_TYPE plurality_voting(K_TYPE k, BestPoint *best_points, int num_classes
 * Classify a given Point (instance).
 * It returns the classified class ID.
 */
-CLASS_ID_TYPE knn_classifyinstance(Point *new_point, K_TYPE k, int num_classes, Point *known_points, int num_points, int num_features) {
+CLASS_ID_TYPE knn_classifyinstance(Point *new_point, Point *known_points) {
 
 	#if DIMEM != 0
-	BestPoint *best_points = (BestPoint *) calloc(k, sizeof(BestPoint)) ;
+	BestPoint *best_points = (BestPoint *) calloc(K, sizeof(BestPoint)) ;
     #else
-	BestPoint best_points[k]; // Array with the k nearest points to the Point to classify
+	BestPoint best_points[K]; // Array with the k nearest points to the Point to classify
 	#endif
 	
     // calculate the distances of the new point to each of the known points and get
     // the k nearest points
-    get_k_NN(new_point, known_points, num_points, best_points, k, num_features);
+    get_k_NN(new_point, known_points, best_points);
 
 	// use plurality voting to return the class inferred for the new point
-	CLASS_ID_TYPE classID = plurality_voting(k, best_points, num_classes);
+	CLASS_ID_TYPE classID = plurality_voting(best_points);
 
 	#if DIMEM != 0
 	free(best_points);

@@ -124,7 +124,7 @@ CLASS_ID_TYPE plurality_voting(K_TYPE k, BestPoint *best_points, int num_classes
         histogram[i] = 0;
     }
     #else
-	K_TYPE *histogram = (K_TYPE *) calloc(NUM_CLASSES, sizeof(CLASS_ID_TYPE)) ;
+	K_TYPE *histogram = (K_TYPE *) calloc(num_classes, sizeof(CLASS_ID_TYPE)) ;
 	#endif
 
     // build the histogram

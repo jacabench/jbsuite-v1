@@ -4,8 +4,32 @@
 #include <float.h>
 #include <stdint.h>
 
+#ifndef DIMEM
+#define DIMEM 0 // 0: not using dynamic memory allocation
+#endif
+
+#ifndef SPECIALIZED
+#define SPECIALIZED 1 // use functions according to the value of K
+#endif
+
+#ifndef TOP_K
+#define TOP_K 1 // the option to determine the k nearest
+#endif
+
+#ifndef MATH_TYPE
+#define MATH_TYPE 1 // use the math.h functions according to the type float or double, e.g., sqrt or sqrtf 
+#endif
+
+#ifndef USE_SQRT
+#define USE_SQRT 0 // 1: using sqrt in Euclidean distance; 0: not using
+#endif
+
+#ifndef DIST_METHOD
+#define DIST_METHOD 1 // calculate, 1: Euclidean distance; 2: Manhattan distance
+#endif 
+
 #ifndef SCENARIO_FEATURES
-#define SCENARIO_FEATURES 2  // 1 = WISDM_Act_v1.1 features; 2 = PAMAP2 features
+#define SCENARIO_FEATURES 1  // 1 = WISDM_Act_v1.1 features; 2 = PAMAP2 features
 #endif
 
 #if SCENARIO_FEATURES == 1
@@ -44,7 +68,7 @@
 #endif
 
 #ifndef DT
-#define DT 1 // 1: double; 2: float; 3: not used for now
+#define DT 2 // 1: double; 2: float; 3: not used for now
 #endif
 
 #if DT == 1	//double

@@ -4,6 +4,10 @@
 #include <float.h>
 #include <stdint.h>
 
+#ifndef DIMEM
+#define DIMEM 0 // 0: not using dynamic memory allocation
+#endif
+
 #ifndef SCENARIO_FEATURES
 #define SCENARIO_FEATURES 2  // 1 = WISDM_Act_v1.1 features; 2 = PAMAP2 features
 #endif
@@ -44,7 +48,7 @@
 #endif
 
 #ifndef DT
-#define DT 1 // 1: double; 2: float; 3: not used for now
+#define DT 2 // 1: double; 2: float; 3: not used for now
 #endif
 
 #if DT == 1	//double

@@ -270,7 +270,7 @@ void select_k_nearest2(BestPoint *dist_points, int num_points, K_TYPE k) {
 	// Perform only k passes
 	for(int i = 0; i < k; i++) {
 		int swapped = 0;
-        for(int j = num_points-i-1; j >=0; j--) {
+		for(int j = num_points-1; j >= i+1; j--) {
             if(dist_points[j].distance < dist_points[j-1].distance) {
                 distance_j = dist_points[j].distance;
                 dist_points[j].distance = dist_points[j-1].distance;

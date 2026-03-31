@@ -17,7 +17,7 @@
 #endif
 
 #ifndef USE_SQRT
-#define USE_SQRT 1 // use sqrt in Euclidean distance
+#define USE_SQRT 0 // use sqrt in Euclidean distance
 #endif
 
 #ifndef MATH_TYPE
@@ -56,7 +56,7 @@
 #endif
 
 #ifndef DT
-#define DT 1 // 1: double; 2: float; 3: not used for now
+#define DT 2 // 1: double; 2: float; 3: not used for now
 #endif
 
 #if DT == 1	//double

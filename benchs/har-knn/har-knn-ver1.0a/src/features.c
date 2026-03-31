@@ -14,7 +14,52 @@
 
 /**
 * Functions for extracting the features from sensing data. 
-*
+* Features extracted mainly according to:
+* -- WISDM [KwapiszWISDM2010]
+* -- PAMAP2 [FerreiraWorkshop2023]
+* @inproceedings{FerreiraWorkshop2023,
+* author = {Ferreira, Paulo J.S. and Mendes Moreira, Joao and Cardoso, Joao M.P.},
+* title = {A Study on Hyperparameters Configurations for an Efficient Human Activity Recognition System},
+* year = {2023},
+* isbn = {9798400708169},
+* publisher = {ACM},
+* address = {New York, NY, USA},
+* doi = {10.1145/3615834.3615851},
+* booktitle = {Proc. 8th Int'l Workshop on Sensor-Based Activity Recognition and Artificial Intelligence (iWOAR)},
+articleno = {11},
+* numpages = {6},
+* location = {L\"{u}beck, Germany},
+* series = {iWOAR '23}
+* }
+* 
+* Original WISDM and PAMAP2 datasets:
+* -- WISDM: https://archive.ics.uci.edu/dataset/507/wisdm+smartphone+and+smartwatch+activity+and+biometrics+dataset
+* @article{KwapiszWISDM2010,
+* author = {Kwapisz, Jennifer R. and Weiss, Gary M. and Moore, Samuel A.},
+* title = {Activity recognition using cell phone accelerometers},
+* year = {2011},
+* issue_date = {December 2010},
+* publisher = {ACM},
+* address = {New York, NY, USA},
+* volume = {12},
+* number = {2},
+* doi = {10.1145/1964897.1964918},
+* journal = {SIGKDD Explor. Newsl.},
+* month = mar,
+* pages = {74–82},
+* numpages = {9}
+* }
+* 
+* -- PAMAP2: https://archive.ics.uci.edu/dataset/231/pamap2+physical+activity+monitoring
+* @INPROCEEDINGS{ReissPAMAP2012,
+*   author={Reiss, Attila and Stricker, Didier},
+*   booktitle={2012 16th Int'l Symp. on Wearable Computers}, 
+*   title={Introducing a New Benchmarked Dataset for Activity Monitoring}, 
+*   year={2012},
+*   volume={},
+*   number={},
+*   pages={108-109},
+*   doi={10.1109/ISWC.2012.13}}
 */
 
 #include <math.h>
@@ -51,7 +96,11 @@ void do_std(DATA_TYPE *std, DATA_TYPE *window, int wsize) {
 	DATA_TYPE variance;
 	do_variance(&variance, window, wsize);
 	
+	#if MATH_TYPE == 1 && DT == 2 // float
+	*std = sqrtf(variance);
+	#else
 	*std = sqrt(variance);
+	#endif
 }
 
 // WISDM
@@ -64,7 +113,11 @@ void do_absoldev(DATA_TYPE *absoldev, DATA_TYPE *window, int wsize) {
 	
 	sum = (DATA_TYPE) 0.0;
 	for(int i=0; i < wsize; i++) {
-		sum += fabs(window[i*NUM_DATA_SAMPLE]-mean);
+		#if MATH_TYPE == 1 && DT == 2 // float
+			sum += fabsf(window[i*NUM_DATA_SAMPLE]-mean);
+		#else
+			sum += fabs(window[i*NUM_DATA_SAMPLE]-mean);
+		#endif
 	}
 	
 	*absoldev = sum / wsize;
@@ -86,8 +139,8 @@ void do_min(DATA_TYPE *min, DATA_TYPE *window, int wsize){
 	}
 }
 
-//X0..x9, Y0..Y9, Z0..Z9 are bins, their values are the fraction
-//	of accelerometer samples that fell within that bin
+// X0..x9, Y0..Y9, Z0..Z9 are bins, their values are the fraction
+// of accelerometer samples that fell within that bin
 void do_bins10(int *bins, DATA_TYPE *window, int wsize) {
 	const int num_bins = 10;
 	DATA_TYPE bin_range;
@@ -126,6 +179,19 @@ void do_bins10(int *bins, DATA_TYPE *window, int wsize) {
 	}
 }
 
+/*
+* Version based on the one used for WISDM
+* See "Algorithm 1: Frequency Heuristic Feature"
+* @mastersthesis{Lockhart2014,
+*  author       = {Jeffrey W. Lockhart},
+*  title        = {The Benefits of Personalized Data Mining Approaches to Human Activity Recognition with Smartphone Sensor Data},
+*  school       = {Fordham University},
+*  address      = {New York, NY, USA},
+*  year         = {2014},
+*  url          = {https://www.cis.fordham.edu/wisdm/Lockhart-MS-thesis.pdf},
+*  note         = {M.Sc. Thesis}
+*}
+*/
 void do_peaks(DATA_TYPE *distpeaks, DATA_TYPE *window, int wsize) {
 	
 	DATA_TYPE max, cutoff;
@@ -183,7 +249,11 @@ void do_peaks(DATA_TYPE *distpeaks, DATA_TYPE *window, int wsize) {
 void do_resultant(DATA_TYPE *resultant, DATA_TYPE *windowX, DATA_TYPE *windowY, DATA_TYPE *windowZ, int wsize) {
 	DATA_TYPE sum = (DATA_TYPE) 0.0;
 	for(int i=0; i < wsize; i++) {
+		#if MATH_TYPE == 1 && DT == 2 // float
+		sum += sqrtf(windowX[i*NUM_DATA_SAMPLE]*windowX[i*NUM_DATA_SAMPLE]+windowY[i*NUM_DATA_SAMPLE]*windowY[i*NUM_DATA_SAMPLE]+windowZ[i*NUM_DATA_SAMPLE]*windowZ[i*NUM_DATA_SAMPLE]);
+		#else
 		sum += sqrt(windowX[i*NUM_DATA_SAMPLE]*windowX[i*NUM_DATA_SAMPLE]+windowY[i*NUM_DATA_SAMPLE]*windowY[i*NUM_DATA_SAMPLE]+windowZ[i*NUM_DATA_SAMPLE]*windowZ[i*NUM_DATA_SAMPLE]);
+		#endif
 	}
 	*resultant = sum / wsize;
 }
@@ -645,25 +715,6 @@ void minmax(DATA_TYPE *min, DATA_TYPE *max, int num_points, Point *known_points,
 }
 
 /*
-* Normalize the features of each point using minmax normalization.
-*/
-void minmax_normalize(DATA_TYPE *min, DATA_TYPE *max, int num_points, Point *points, int num_features) {
-
-    for (int i = 0; i < num_points; i++) {
-        for (int j = 0; j < num_features; j++) {
-			
-			DATA_TYPE nfeature = (DATA_TYPE) ((points[i].features[j] - min[j])/(max[j] - min[j]));
-			
-			// in case the normalization returns a NaN or INF
-			if(isnan(nfeature)) nfeature = (DATA_TYPE) 0.0;
-			else if(isinf(nfeature)) nfeature = (DATA_TYPE) 1.0;
-			
-			points[i].features[j] = nfeature;
-		}
-    }
-}
-
-/*
 * Normalize the features of a single point using minmax normalization.
 */
 void minmax_normalize_point(DATA_TYPE *min, DATA_TYPE *max, Point *point, int num_features) {
@@ -680,7 +731,20 @@ void minmax_normalize_point(DATA_TYPE *min, DATA_TYPE *max, Point *point, int nu
     }
 }
 
+/*
+* Normalize the features of all the points using minmax normalization.
+*/
+void minmax_normalize(DATA_TYPE *min, DATA_TYPE *max, int num_points, Point *points, int num_features) {
 
+    for (int i = 0; i < num_points; i++) {
+		minmax_normalize_point(min, max, &points[i], num_features);
+    }
+}
+
+/* 
+* Use the most representative class ID as the label for each sliding window.
+* The class id with more labels in the instances belonging to the window is the one used.  
+*/
 void do_class(CLASS_ID_TYPE *classid, Instance *instances, int wsize, int num_classes) {
 
 	#if DIMEM == 0
@@ -693,7 +757,7 @@ void do_class(CLASS_ID_TYPE *classid, Instance *instances, int wsize, int num_cl
 	K_TYPE *histogram = (K_TYPE *) calloc(NUM_CLASSES, sizeof(CLASS_ID_TYPE)) ;
 	#endif
 	
-	for(int j=0; j< wsize; j++) { // fill the buffers
+	for(int j=0; j< wsize; j++) { 
 		CLASS_ID_TYPE classid = instances[j].classification_id;
 		histogram[(int) classid]++;
 	}
@@ -712,4 +776,4 @@ void do_class(CLASS_ID_TYPE *classid, Instance *instances, int wsize, int num_cl
 	#endif
 	
 	*classid = index;
-}	
+}
