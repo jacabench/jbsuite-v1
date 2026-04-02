@@ -14,6 +14,15 @@
 typedef uint8_t uint8;
 
 /*	Code versions
+*	NUM_THREADS:
+*	0: decision of how many threads to launch to openmp runtime
+*	1..N: specific number of threads to launch
+*/
+#ifndef NUM_THREADS
+#define NUM_THREADS 0
+#endif
+
+/*	Code versions
 *	RUN_OPTION:
 *	1: smooth
 *	2: smooth_reuse1
