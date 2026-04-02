@@ -1,8 +1,9 @@
-# Contributing to jacabench suite benchmark
+# Contributing to the JACABench benchmark suite
 
 Thank you for considering contributing to **jbsuite**. 
 
 This document outlines the process for contributing to the repository.
+Any intention to contribute shall be sent to: jacabenchsuite@gmail.com
 
 ## 🛠 Types of Contributions We Expect
 
