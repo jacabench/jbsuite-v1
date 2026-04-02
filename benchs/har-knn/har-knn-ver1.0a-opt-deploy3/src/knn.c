@@ -163,7 +163,7 @@ void get_3_NN(Point *new_point, Point *known_points, BestPoint *best_points) {
 	 
     // calculate the Euclidean distance between the Point to classify and each Point in the
     // training dataset (knowledge base)
-    for (int i = 0; i < num_points; i++) {
+    for (int i = 0; i < NUM_KNOWN_POINTS; i++) {
         DATA_TYPE distance = (DATA_TYPE) 0.0;
 
 		#if DIST_METHOD == 1 // calculate the Euclidean distance

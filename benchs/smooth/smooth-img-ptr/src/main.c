@@ -66,14 +66,14 @@ uint8 *in = &in1[0][0];
 uint8 out1[sizeY][sizeX];
 uint8 *out = &out1[0][0];
 
-/* for validity checking using checksum */
+/* for validity checking using checksum and for CONFIG=1*/
 /* this is for now not used for input bmp files */
 #if READ == VIA_LOOP && CHECK_VALIDITY == 1
 #define RIGHT_CHECKSUM  8233134
 #elif READ == VIA_INIT_ARRAYS && CHECK_VALIDITY == 1
 #define RIGHT_CHECKSUM 11539953
 #elif READ == VIA_ASCII_FILES && CHECK_VALIDITY == 1
-#define RIGHT_CHECKSUM 3498984
+#define RIGHT_CHECKSUM 11539953
 #endif
 
 /*
@@ -180,11 +180,14 @@ int main() {
 	
 #endif
 
-#if CHECK_VALIDITY == 1 && (READ == VIA_LOOP || READ == VIA_INIT_ARRAYS || READ == VIA_ASCII_FILES)
+// Validation for CONFIG=1
+#if CONFIG == 1 && CHECK_VALIDITY == 1 && (READ == VIA_LOOP || READ == VIA_INIT_ARRAYS || READ == VIA_ASCII_FILES)
+	printf("** Validating results with gold...\n");
 	/* some validity checking */
-	check_validity_checksum(&out[0][0], sizeX*sizeY, RIGHT_CHECKSUM);
+	check_validity_checksum(out, sizeX*sizeY, RIGHT_CHECKSUM);
 	printf("right checksum = %ld\n", (long int) RIGHT_CHECKSUM);
-#elif CHECK_VALIDITY == 2 && (READ == VIA_INIT_ARRAYS || READ == VIA_ASCII_FILES)
+#elif CONFIG == 1 && CHECK_VALIDITY == 2 && (READ == VIA_INIT_ARRAYS || READ == VIA_ASCII_FILES)
+	printf("** Validating results with gold...\n");
 	#if READ == VIA_ASCII_FILES
 	/* Read input image from ascii file. */
 	printf("Gold data from: %s\n", OUTPUT_GOLD_RESOURCE);
@@ -193,9 +196,8 @@ int main() {
 		printf("Error reading input image!\n");
 		return 1;
 	}
-
 	#endif
-	check_validity(&out[0][0], &out_gold[0][0], sizeX*sizeY); 
+	check_validity(out, out_gold, sizeX*sizeY); 
 #endif
 
 #if READ == VIA_ASCII_FILES

@@ -47,6 +47,29 @@
 *	test1.dat			test2.dat
 */
 
+#ifndef READ
+#define READ 4 // 3: static initalization; 4: read from .dat
+#endif
+
+#if READ == 4
+#ifndef TEST_PATH
+#define TEST_PATH "test2.dat"
+#endif
+#endif
+
+#ifndef TIMING
+#define TIMING 1 // 0: w/o timing; 1: w/ timing
+#endif
+
+#ifndef VERIFY
+	#define VERIFY 0 	// 0: none verification;
+						// 1: to verify if the results are according to the ones expected
+#endif
+
+#ifndef ACCURACY
+#define ACCURACY 1 	// 0: w/o reporting; 1: reporting the accuracy of the classification
+#endif
+
 #include <stdio.h>
 #include "timing.h"
 #include "params.h"

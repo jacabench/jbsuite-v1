@@ -39,6 +39,7 @@ K ?= 3
 DT ?= 2
 READ ?= 2
 STREAMING ?= 1
+TIMING ?= 1
 # -------- Compiler optimizations --------
 OPT ?= -O3
 
@@ -93,6 +94,7 @@ CFLAGS = $(OPT) \
 	-D DT=$(DT) \
 	-D SCENARIO_FEATURES=$(SCENARIO_FEATURES) \
 	-D READ=$(READ) \
+	-D TIMING=$(TIMING) \
 	-D DIMEM=0 -D VERIFY=0 -D STREAMING=$(STREAMING) -D NORMALIZE=1
 
 # -------- Scenario read options --------

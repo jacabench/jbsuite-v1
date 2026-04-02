@@ -35,7 +35,7 @@ void initialize_3_best(BestPoint *best_points);
 
 void update_3_best(DATA_TYPE distance, CLASS_ID_TYPE classID, BestPoint *best_points);
 
-void get_3_NN(Point *new_point, Point *known_points, int num_points, BestPoint *best_points, int num_features);
+void get_3_NN(Point *new_point, Point *known_points, BestPoint *best_points);
 
 CLASS_ID_TYPE plurality_voting_3(BestPoint *best_points);
 

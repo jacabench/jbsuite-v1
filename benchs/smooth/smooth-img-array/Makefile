@@ -2,14 +2,6 @@
 # JAVABenchSuite
 # smooth kernel
 
-# Typical gcc compiler command: 
-#gcc -DCONFIG=1 -DCHECK_VALIDITY=0 -DTIMING=0 -DREAD=4 -DRUN_OPTION=1 -Wall \ 
-#-march=native -std=c99 -I"..\gold" \
-# -I"..\..\..\tools-libs\bmplib" -I"..\..\images" -I"..\..\..\includes" \
-# "src\main.c" "src\utils.c" "src\smooth.c" "..\..\..\includes\utilsjacabenchs.c" \
-# "..\..\..\includes\IO.c" "..\..\..\includes\timer.c" "..\..\..\tools-libs\bmplib\bmplib.c" \
-# -o smooth.exe -lm
-
 # the following definitions are passed through gcc parameters
 #define CONFIG 1
 #define CHECK_VALIDITY 0 or 1
@@ -46,7 +38,7 @@ READ ?= 2
 RUN_OPTION ?= 1
 
 #compiler optimizations
-OPT ?= -O3 -march=native
+OPT ?= -O3 #-march=native
 
 # to work in Windows and Linux
 ifeq ($(OS),Windows_NT)
@@ -72,7 +64,7 @@ JACALIBS = $(JACAPATH)$(PATH_SEP)tools-libs$(PATH_SEP)bmplib
 
 INPUT_PATH = $(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)images
 OUTPUT_PATH =$(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)smooth-img-array$(PATH_SEP1)output
-GOLD_PATH = $(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)smooth-img-array$(PATH_SEP1)gold
+GOLD_PATH = $(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)gold
 
 echo1:
 	@echo JACABench path: $(JACAPATH)
@@ -92,6 +84,7 @@ CC = gcc
 CFLAGS = $(OPT) \
 	-I$(JACAINCLUDES) \
 	-I$(INPUT_PATH) \
+	-I$(GOLD_PATH) \
 	-Wall -Wextra -std=gnu99 \
 	-D RUN_OPTION=$(RUN_OPTION) \
 	-D CONFIG=$(CONFIG) \

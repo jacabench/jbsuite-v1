@@ -65,7 +65,7 @@
 #endif
 #endif
 
-#ifndef TIMNG
+#ifndef TIMING
 	#define TIMING 1 // 0: w/o timing; 1: w/ timing
 #endif
 
@@ -211,7 +211,7 @@ int main() {
 
 	__REPORT_TIMING_S();
 
-	#if TIMMING == 1
+	#if TIMING == 1
 		printf("Inference time: %.4f ms\n", (time/num_new_points*1000));
 		printf("Throughput: %.2f inferences/s\n", num_new_points/time);
 	#endif

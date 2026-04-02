@@ -34,13 +34,14 @@ endif
 #variable can be overridden: wisdm or papmap2
 SCENARIO ?= wisdm
 K ?= 3
-DT ?= 1
+DT ?= 2
 READ ?= 4
 SPECIALIZED ?= 0
 USE_SQRT ?= 0
 MATH_TYPE ?= 1
 DIST_METHOD ?= 1
 TOP_K ?= 1
+TIMING ?= 1
 
 # -------- Compiler optimizations --------
 OPT ?= -O3
@@ -101,6 +102,7 @@ CFLAGS = $(OPT) \
 	-D DIST_METHOD=$(DIST_METHOD) \
 	-D USE_SQRT=$(USE_SQRT) \
 	-D SCENARIO_FEATURES=$(SCENARIO_FEATURES) \
+	-D TIMING=$(TIMING) \
 	-D READ=$(READ) -D DIMEM=0 -D VERIFY=0
 
 # -------- Scenario read options --------

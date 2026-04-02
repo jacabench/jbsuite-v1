@@ -43,6 +43,7 @@ USE_SQRT ?= 0
 MATH_TYPE ?= 1
 DIST_METHOD ?= 1
 UPDATE ?= 1
+TIMING ?= 1
 
 # -------- Compiler optimizations --------
 OPT ?= -O3
@@ -104,6 +105,7 @@ CFLAGS = $(OPT) \
 	-D USE_SQRT=$(USE_SQRT) \
 	-D SCENARIO_FEATURES=$(SCENARIO_FEATURES) \
 	-D READ=$(READ) \
+	-D TIMING=$(TIMING) \
 	-D DIMEM=0 -D VERIFY=0
 
 # -------- Scenario read options --------

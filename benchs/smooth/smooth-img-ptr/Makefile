@@ -72,7 +72,7 @@ JACALIBS = $(JACAPATH)$(PATH_SEP)tools-libs$(PATH_SEP)bmplib
 
 INPUT_PATH = $(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)images
 OUTPUT_PATH =$(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)smooth-img-ptr$(PATH_SEP1)output
-GOLD_PATH = $(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)smooth-img-ptr$(PATH_SEP1)gold
+GOLD_PATH = $(JACAPATH)$(PATH_SEP1)benchs$(PATH_SEP1)smooth$(PATH_SEP1)gold
 
 echo1:
 	@echo JACABench path: $(JACAPATH)
@@ -92,6 +92,7 @@ CC = gcc
 CFLAGS = $(OPT) \
 	-I$(JACAINCLUDES) \
 	-I$(INPUT_PATH) \
+	-I$(GOLD_PATH) \
 	-Wall -Wextra -std=gnu99 \
 	-D RUN_OPTION=$(RUN_OPTION) \
 	-D CONFIG=$(CONFIG) \

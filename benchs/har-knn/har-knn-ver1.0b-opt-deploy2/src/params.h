@@ -12,8 +12,8 @@
 #define SPECIALIZED 1 // use functions according to the value of K
 #endif
 
-#ifndef TOP_K
-#define TOP_K 1 // the option to determine the k nearest
+#ifndef UPDATE
+#define UPDATE 1 // the option to determine the k nearest
 #endif
 
 #ifndef MATH_TYPE
