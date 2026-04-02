@@ -29,13 +29,13 @@ Email: jacabenchsuite@gmail.com
 ## Citation
 If you find the JACABench useful, please use the following citation:
 ```
-@inproceedings{jacabenchARC2026,\
-  author    = {Jos{\'e} A.M. de Holanda and Vanderlei Bonato and Jo{\~a}o M.P. Cardoso and Jos{\'e} Mendes},\
-  title     = {{JACABench} -- The {JACA} Benchmark Suite for Embedded Computing},\
-  booktitle = {Applied Reconfigurable Computing. ARC 2026},\
-  series    = {Lecture Notes in Computer Science},\
-  publisher = {Springer},\
-  year      = {2026},\
-  note      = {To appear}\
+@inproceedings{jacabenchARC2026,
+  author    = {Jos{\'e} A.M. de Holanda and Vanderlei Bonato and Jo{\~a}o M.P. Cardoso and Jos{\'e} Mendes},
+  title     = {{JACABench} -- The {JACA} Benchmark Suite for Embedded Computing},
+  booktitle = {Applied Reconfigurable Computing. ARC 2026},
+  series    = {Lecture Notes in Computer Science},
+  publisher = {Springer},
+  year      = {2026},
+  note      = {To appear}
 }
 ```
