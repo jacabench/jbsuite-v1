@@ -1,3 +1,4 @@
+<img src="JACABenchLogo.png" alt="JACABench logo" style="width:30%;"/>
 # jbsuite-v1
 Version 1 of the JACA Benchmark Suite
 
